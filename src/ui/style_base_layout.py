@@ -4,6 +4,12 @@ def base_layout():
         <style>
            @import url('https://fonts.googleapis.com/css2?family=Climate+Crisis:YEAR@1979&family=Outfit:wght@100..900&display=swap');
            @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+           #MainMenu , footer , header{
+               visibility:hidden;
+            }
+            .block-container{
+                padding-top:1.5rem !important;
+            }
            h1{
                font-family:'Climate Crisis' , sans-serif !important;
                line-height:1.1 !important;
