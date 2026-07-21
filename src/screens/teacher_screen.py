@@ -10,8 +10,10 @@ from src.components.add_photos_dialogue import add_photos_dialogue
 from src.pipelines.face_pipeline import predict_attendance
 import numpy as np
 from src.database.congig import supabase
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import pandas as pd
+
+IST = timezone(timedelta(hours=5, minutes=30))
 from src.components.dialogue_attendence_result import attendence_result_dialogue
 def teacher_screen():
     base_layout() 
@@ -107,7 +109,7 @@ def teacher_tab_take_attendence():
                         st.warning("No students in this course")
                     else:
                         results , attendence_to_log = [] , []
-                        current_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+                        current_timestamp = datetime.now(timezone.utc).isoformat()
                         for node in enrolled_students:
                             student = node['students']
                             sources = all_detected_ids.get(int(student['student_id']),[])
@@ -165,9 +167,19 @@ def teacher_tab_attendence_records():
     else:
         for r in records:
             ts = r.get("timestamp")
+            if ts:
+                dt = datetime.fromisoformat(ts)
+                if dt.tzinfo is None:
+                    dt = dt.replace(tzinfo=timezone.utc)
+                dt_ist = dt.astimezone(IST)
+                time_str = dt_ist.strftime("%Y-%m-%d %I:%M %p")
+                ts_group = dt_ist.strftime("%Y-%m-%d %H:%M:%S")
+            else:
+                time_str = "N/A"
+                ts_group = None
             data.append({
-                "ts_group":ts.split(".")[0] if ts else None,
-                "Time":datetime.fromisoformat(ts).strftime("%Y-%m-%d %I:%M %p") if ts else "N'A",
+                "ts_group":ts_group,
+                "Time":time_str,
                 "Subject":r['subjects']['name'],
                 "Subject Code":r['subjects']['subject_code'],
                 "is_present":bool(r.get('is_present',False))
