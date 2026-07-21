@@ -253,7 +253,7 @@ def register_teacher(teacher_name , teacher_username , teacher_password , confir
         return False , "Unknown error occured!"
     # website teacher register area
 def teacher_screen_register():
-    footer()
+    header_portal()
     st.markdown("<p style='font-size:2rem; text-align:center;'>Register Your Teacher Profile</p>",unsafe_allow_html=True)
     teacher_name = st.text_input("Enter name" , placeholder="Jatin Kumar")
     teacher_username = st.text_input("Enter Username",placeholder="Jatin Saini")
@@ -275,4 +275,4 @@ def teacher_screen_register():
     with col2:
         if st.button("Login" , icon=':material/passkey:' , width='stretch'):
             st.session_state['teacher_login_type']='login'
-    
+    footer()
