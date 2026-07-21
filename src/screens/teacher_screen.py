@@ -239,7 +239,6 @@ def teacher_screen_login():
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
     # calls database functions
 def register_teacher(teacher_name , teacher_username , teacher_password , confirm_teacher_password):
-    header_portal()
     if not teacher_name or not teacher_password or not teacher_username or not confirm_teacher_password:
         return False , "All feilds are necessary!"
     if teacher_exists(teacher_username):
